@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>MathSolver Pro - Kalkulator Matematika Tingkat Lanjut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@11.11.0/lib/browser/math.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🧮 MathSolver Pro</h1>
+      <p>Kalkulator Kalkulus, Aljabar, Statistika, Grafik</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="kalkulus">Kalkulus</button>
+      <button class="tab" data-tab="aljabar">Aljabar</button>
+      <button class="tab" data-tab="statistika">Statistika</button>
+      <button class="tab" data-tab="trigonometri">Trigonometri</button>
+      <button class="tab" data-tab="kompleks">Kompleks</button>
+      <button class="tab" data-tab="grafik">Grafik</button>
+    </div>
+
+    <!-- KALKULUS -->
+    <div class="calc-box show" id="kalkulus">
+      <div class="calc-title">∫ Kalkulus</div>
+      <select class="formula-select" id="kalkulusFormula">
+        <option value="turunan">Turunan f(x)</option>
+        <option value="integral_tentu">Integral Tentu ∫ₐᵇ f(x)dx</option>
+        <option value="integral_tak">Integral Tak Tentu ∫ f(x)dx</option>
+        <option value="limit">Limit lim x→a f(x)</option>
+      </select>
+      <div class="formula-info" id="kalkulusInfo">f'(x) = lim h→0 [f(x+h)-f(x)]/h</div>
+      <div id="kalkulusInputs"></div>
+      <button class="calc-btn" onclick="calcKalkulus()">Hitung</button>
+      <div class="result-box" id="kalkulusResult"></div>
+      <div class="error-box" id="kalkulusError"></div>
+    </div>
+
+    <!-- ALJABAR -->
+    <div class="calc-box" id="aljabar">
+      <div class="calc-title">📊 Aljabar Linear</div>
+      <select class="formula-select" id="aljabarFormula">
+        <option value="determinan">Determinan Matriks 3x3</option>
+        <option value="invers">Invers Matriks 3x3</option>
+        <option value="spl">SPL 3 Variabel - Cramer</option>
+        <option value="perkalian">Perkalian Matriks</option>
+      </select>
+      <div class="formula-info" id="aljabarInfo">det(A) = a(ei-fh) - b(di-fg) + c(dh-eg)</div>
+      <div id="aljabarInputs"></div>
+      <button class="calc-btn" onclick="calcAljabar()">Hitung</button>
+      <div class="result-box" id="aljabarResult"></div>
+      <div class="error-box" id="aljabarError"></div>
+    </div>
+
+    <!-- STATISTIKA -->
+    <div class="calc-box" id="statistika">
+      <div class="calc-title">📈 Statistika</div>
+      <select class="formula-select" id="statistikaFormula">
+        <option value="deskriptif">Statistik Deskriptif</option>
+        <option value="regresi">Regresi Linear y = ax + b</option>
+        <option value="kombinasi">Kombinasi C(n,r)</option>
+        <option value="permutasi">Permutasi P(n,r)</option>
+      </select>
+      <div class="formula-info" id="statistikaInfo">μ = Σx/n, σ = √(Σ(x-μ)²/n)</div>
+      <div id="statistikaInputs"></div>
+      <button class="calc-btn" onclick="calcStatistika()">Hitung</button>
+      <div class="result-box" id="statistikaResult"></div>
+      <div class="error-box" id="statistikaError"></div>
+    </div>
+
+    <!-- TRIGONOMETRI -->
+    <div class="calc-box" id="trigonometri">
+      <div class="calc-title">📐 Trigonometri Lanjut</div>
+      <select class="formula-select" id="trigonometriFormula">
+        <option value="identitas">Buktikan Identitas</option>
+        <option value="persamaan">Persamaan Trigonometri</option>
+        <option value="segitiga">Aturan Sin/Cos Segitiga</option>
+        <option value="invers">Fungsi Invers: arcsin, arccos</option>
+      </select>
+      <div class="formula-info" id="trigonometriInfo">sin²θ + cos²θ = 1</div>
+      <div id="trigonometriInputs"></div>
+      <button class="calc-btn" onclick="calcTrigonometri()">Hitung</button>
+      <div class="result-box" id="trigonometriResult"></div>
+      <div class="error-box" id="trigonometriError"></div>
+    </div>
+
+    <!-- BILANGAN KOMPLEKS -->
+    <div class="calc-box" id="kompleks">
+      <div class="calc-title">🔢 Bilangan Kompleks</div>
+      <select class="formula-select" id="kompleksFormula">
+        <option value="operasi">Operasi: +, -, ×, ÷</option>
+        <option value="modulus">Modulus & Argumen</option>
+        <option value="polar">Bentuk Polar ↔ Kartesian</option>
+        <option value="pangkat">Pangkat Kompleks - De Moivre</option>
+      </select>
+      <div class="formula-info" id="kompleksInfo">z = a + bi, |z| = √(a²+b²)</div>
+      <div id="kompleksInputs"></div>
+      <button class="calc-btn" onclick="calcKompleks()">Hitung</button>
+      <div class="result-box" id="kompleksResult"></div>
+      <div class="error-box" id="kompleksError"></div>
+    </div>
+
+    <!-- GRAFIK -->
+    <div class="calc-box" id="grafik">
+      <div class="calc-title">📉 Plot Grafik Fungsi</div>
+      <div class="input-group">
+        <label>Masukkan Fungsi f(x)</label>
+        <input type="text" class="input-field" id="fungsiGrafik" placeholder="Contoh: x^2 + 2*x - 3" value="x^2">
+      </div>
+      <div class="input-row">
+        <div class="input-group" style="flex:1">
+          <label>X Min</label>
+          <input type="number" class="input-field" id="xMin" value="-10">
+        </div>
+        <div class="input-group" style="flex:1">
+          <label>X Max</label>
+          <input type="number" class="input-field" id="xMax" value="10">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="plotGrafik()">Plot Grafik</button>
+      <div class="chart-container">
+        <canvas id="grafikCanvas"></canvas>
+      </div>
+      <div class="error-box" id="grafikError"></div>
+    </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
